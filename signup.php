@@ -24,34 +24,42 @@
     ?>
 
     <?php
-    $show_success = false;
     $show_error = false;
+    $show_pass_error = false;
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         include '_dbConnect.php';
         $username = $_POST["uname"];
         $pass = $_POST["pass"];
         $cpass = $_POST["cpass"];
 
-        if ($pass == $cpass) {
+        $sql = "select * from `user` where username = '$username'";
+        $sqlexe = mysqli_query($conn, $sql);
+        $num = mysqli_num_rows($sqlexe);
+
+        if($num > 0){
+            $show_error = true;
+        }else{
+        if($pass == $cpass) {
             $sql = "INSERT INTO `user` (`username`, `password`) VALUES ( '$username', '$pass');";
             $sqlexe = mysqli_query($conn, $sql);
 
-            if ($sqlexe) {
-                $show_success = true;
-            }
+            // if ($sqlexe) {
+            //     $show_pass_error = true;
+            // }
         } else {
-            $show_error = true;
+            $show_pass_error = true;
         }
     }
+}
     ?>
 
     <?php
-    if ($show_success) {
-        echo "Your account has been created sucessfuly";
+    if ($show_error) {
+        echo "<script>alert('Username already exists. Please enter another username')</script>";
     }
 
-    if ($show_error) {
-        echo "passwords do not match";
+    if ($show_pass_error) {
+        echo "<script>alert('Passwords do not match')</script>";
     }
     ?>
 
