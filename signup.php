@@ -26,6 +26,35 @@
     <?php
     $show_error = false;
     $show_pass_error = false;
+
+    // Without password hashing
+//     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+//         include '_dbConnect.php';
+//         $username = $_POST["uname"];
+//         $pass = $_POST["pass"];
+//         $cpass = $_POST["cpass"];
+
+//         $sql = "select * from `user` where username = '$username'";
+//         $sqlexe = mysqli_query($conn, $sql);
+//         $num = mysqli_num_rows($sqlexe);
+
+//         if($num > 0){
+//             $show_error = true;
+//         }else{
+//         if($pass == $cpass) {
+//             $sql = "INSERT INTO `user` (`username`, `password`) VALUES ( '$username', '$pass');";
+//             $sqlexe = mysqli_query($conn, $sql);
+
+//             // if ($sqlexe) {
+//             //     $show_pass_error = true;
+//             // }
+//         } else {
+//             $show_pass_error = true;
+//         }
+//     }
+// }
+
+    // With Password hashing
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         include '_dbConnect.php';
         $username = $_POST["uname"];
@@ -51,6 +80,8 @@
         }
     }
 }
+
+
     ?>
 
     <?php
