@@ -26,7 +26,7 @@
     <?php
     $show_error = false;
     $show_pass_error = false;
-
+    $show_success = false;
     // Without password hashing
 //     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 //         include '_dbConnect.php';
@@ -68,20 +68,19 @@
         if($num > 0){
             $show_error = true;
         }else{
-        if($pass == $cpass) {
-            $sql = "INSERT INTO `user` (`username`, `password`) VALUES ( '$username', '$pass');";
+            if($pass == $cpass) {
+            $hash = password_hash($pass, PASSWORD_DEFAULT);
+            $sql = "INSERT INTO `user` (`username`, `password`) VALUES ( '$username', '$hash');";
             $sqlexe = mysqli_query($conn, $sql);
 
-            // if ($sqlexe) {
-            //     $show_pass_error = true;
-            // }
+            if($sqlexe){
+                $show_success = true;
+            }
         } else {
             $show_pass_error = true;
         }
     }
 }
-
-
     ?>
 
     <?php
@@ -92,8 +91,14 @@
     if ($show_pass_error) {
         echo "<script>alert('Passwords do not match')</script>";
     }
+
+    if($show_success){
+        echo "<script>alert('Account created Sucessfully')</script>";
+        header('location: login.php');
+    }
     ?>
 
+    
     <form action="signup.php" method="POST">
         <label>Username</label><br>
         <input type="text" name="uname" autocomplete="off"><br>
